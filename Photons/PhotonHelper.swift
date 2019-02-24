@@ -14,7 +14,7 @@ class PhotonHelper<A: Photon> {
         return .success([])
     }
     
-    static func fetch<PhotonType>(type: PhotonType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[A], PhotonError> {
+    static func fetch<PhotonType>(type: PhotonType? = nil, onQueue queue: DispatchQueue, size: Size? = nil, limit: UInt = 0) -> Result<[A], PhotonError> {
         return .success([])
     }
     
@@ -24,5 +24,9 @@ class PhotonHelper<A: Photon> {
     
     static func sizedTo(_ size: Size) -> Result<[A], PhotonError> {
         return .success([])
+    }
+    
+    static func savePhoton(_ photon: A, onQueue queue: DispatchQueue) throws {
+        
     }
 }

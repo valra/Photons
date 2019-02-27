@@ -126,10 +126,20 @@ public protocol PhotonContainer {
 
 // MARK: Album
 
-public struct Album<Photon>: PhotonContainer {
+public struct Album<PhotonType: Photon>: PhotonContainer {
     public let id: String
     public let name: String
-    public let data: [Photon]
+    public let data: [PhotonType]
+    
+    public init(id: String, name: String, data: [PhotonType]) {
+        self.id = id
+        self.name = name
+        self.data = data
+    }
+    
+    public func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
+        try data.save(onQueue: queue)
+    }
 }
 
 // Album that contains many burst photos

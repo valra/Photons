@@ -17,6 +17,8 @@
 		C706126C2207D1920031D76C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C706126A2207D1920031D76C /* Main.storyboard */; };
 		C706126E2207D1930031D76C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C706126D2207D1930031D76C /* Assets.xcassets */; };
 		C70612712207D1930031D76C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C706126F2207D1930031D76C /* LaunchScreen.storyboard */; };
+		C7ECC12022222A0E0049285E /* Photons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70612422207CF9F0031D76C /* Photons.framework */; };
+		C7ECC12122222A0E0049285E /* Photons.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C70612422207CF9F0031D76C /* Photons.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +29,28 @@
 			remoteGlobalIDString = C70612412207CF9F0031D76C;
 			remoteInfo = Photons;
 		};
+		C7ECC12222222A0E0049285E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C70612392207CF9F0031D76C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C70612412207CF9F0031D76C;
+			remoteInfo = Photons;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C7ECC12422222A0E0049285E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C7ECC12122222A0E0049285E /* Photons.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C70612422207CF9F0031D76C /* Photons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Photons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7ECC12022222A0E0049285E /* Photons.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,10 +207,12 @@
 				C70612602207D1920031D76C /* Sources */,
 				C70612612207D1920031D76C /* Frameworks */,
 				C70612622207D1920031D76C /* Resources */,
+				C7ECC12422222A0E0049285E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C7ECC12322222A0E0049285E /* PBXTargetDependency */,
 			);
 			name = PhotonsDemoApp;
 			productName = PhotonsDemoApp;
@@ -296,6 +322,11 @@
 			isa = PBXTargetDependency;
 			target = C70612412207CF9F0031D76C /* Photons */;
 			targetProxy = C706124D2207CF9F0031D76C /* PBXContainerItemProxy */;
+		};
+		C7ECC12322222A0E0049285E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C70612412207CF9F0031D76C /* Photons */;
+			targetProxy = C7ECC12222222A0E0049285E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -535,6 +566,7 @@
 		C70612742207D1940031D76C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A6DQXB353D;
@@ -553,6 +585,7 @@
 		C70612752207D1940031D76C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A6DQXB353D;

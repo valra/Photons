@@ -20,7 +20,7 @@ public typealias LocationCoordinate = (latitude: Double, longitude: Double)
 
 public protocol Photon {
     associatedtype `PhotonType`
-    
+
     var id: String { get }
     var data: Data { get }
     var size: Size { get }
@@ -31,15 +31,15 @@ public protocol Photon {
 }
 
 public extension Photon {
-    
+
     static func filter(_ isIncluded: (Self) -> Bool) -> Result<[Self], PhotonError> {
         return PhotonHelper<Self>.filter(isIncluded)
     }
-    
+
     static func fetch(type: PhotonType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Self], PhotonError> {
         return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
     }
-    
+
     func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
         try PhotonHelper.savePhoton(self, onQueue: queue)
     }
@@ -57,9 +57,9 @@ public enum PhotoType {
 }
 
 public struct Photo: Photon {
-    
+
     public typealias PhotonType = PhotoType
-    
+
     public let id: String
     public let data: Data
     public let size: Size
@@ -67,7 +67,7 @@ public struct Photo: Photon {
     public let creationDate: Date
     public let modificationDate: Date
     public let locationCoordinate: LocationCoordinate?
-    
+
     public init(id: String, data: Data, size: Size, type: PhotonType, creationDate: Date, modificationDate: Date, locationCoordinate: LocationCoordinate? = nil) {
         self.id = id
         self.data = data
@@ -90,9 +90,9 @@ public enum VideoType {
 }
 
 public struct Video: Photon {
-    
+
     public typealias PhotonType = VideoType
-    
+
     public let id: String
     public let data: Data
     public let size: Size
@@ -101,7 +101,7 @@ public struct Video: Photon {
     public let modificationDate: Date
     public let locationCoordinate: LocationCoordinate?
     public let duration: TimeInterval
-    
+
     public init(id: String, data: Data, size: Size, type: PhotonType, creationDate: Date, modificationDate: Date, locationCoordinate: LocationCoordinate? = nil, duration: TimeInterval) {
         self.id = id
         self.data = data
@@ -118,7 +118,7 @@ public struct Video: Photon {
 
 public protocol PhotonContainer {
     associatedtype Photon
-    
+
     var id: String { get }
     var name: String { get }
     var data: [Photon] { get }
@@ -130,13 +130,13 @@ public struct Album<PhotonType: Photon>: PhotonContainer {
     public let id: String
     public let name: String
     public let data: [PhotonType]
-    
+
     public init(id: String, name: String, data: [PhotonType]) {
         self.id = id
         self.name = name
         self.data = data
     }
-    
+
     public func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
         try data.save(onQueue: queue)
     }
@@ -152,35 +152,35 @@ public struct Album<PhotonType: Photon>: PhotonContainer {
 // MARK: Result Extensions
 
 public extension Result where Success == [Photo], Failure == PhotonError {
-    
+
     func sorted(by areInIncreasingOrder: (Photo, Photo) -> Bool) -> Result<[Photo], PhotonError> {
         return PhotonHelper<Photo>.sorted(by: areInIncreasingOrder)
     }
-    
+
     func fetch(type: PhotoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Photo], PhotonError> {
         return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
     }
-    
+
 }
 
 public extension Result where Success == [Video], Failure == PhotonError {
-    
+
     func sorted(by areInIncreasingOrder: (Video, Video) -> Bool) -> Result<[Video], PhotonError> {
         return PhotonHelper<Video>.sorted(by: areInIncreasingOrder)
     }
-    
+
     func fetch(type: VideoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Video], PhotonError> {
         return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
     }
-    
+
 }
 
 // MARK: Array Extensions
 
 public extension Array where Element: Photon {
-    
+
     func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
         try forEach { try $0.save() }
     }
-    
+
 }

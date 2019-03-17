@@ -1,0 +1,90 @@
+disabled_rules:
+  - line_length
+  - force_cast
+  - notification_center_detachment
+  - function_parameter_count
+  - trailing_comma
+
+opt_in_rules:
+  - overridden_super_call
+  - closure_spacing
+  - explicit_init
+  - implicit_return
+  - joined_default_parameter
+  - operator_usage_whitespace
+  - redundant_nil_coalescing
+  - sorted_imports
+  - trailing_whitespace
+  - vertical_whitespace
+  - unneeded_parentheses_in_closure_argument
+
+closing_brace: error
+colon:
+  severity: error
+  flexible_right_spacing: false
+  apply_to_dictionaries: true
+
+comma: error
+control_statement: error
+leading_whitespace: error
+nesting:
+  type_level: 2
+  statement_level: 5
+
+opening_brace: error
+operator_whitespace: error
+return_arrow_whitespace: error
+
+statement_position:
+  severity: error
+
+trailing_newline: error
+trailing_semicolon: error
+force_try: warning
+
+cyclomatic_complexity:
+  warning: 35
+  error: 45
+
+function_body_length:
+  warning: 50
+
+file_length:
+  warning: 500
+  error: 1000
+
+type_body_length:
+  warning: 300
+  error: 600
+
+identifier_name:
+  min_length:
+    warning: 1
+    error: 1
+
+large_tuple:
+  warning: 4
+  error: 5
+
+custom_rules:
+  empty_collection_type_annotation: # rule identifier
+    included: ".*\\.swift" # regex that defines paths to include during linting. optional.
+    regex: "(=[\\h\\S]*\\[[\\h\\S]+\\]\\s*\\(\\))" # matching pattern
+    match_kinds: # SyntaxKinds to match. optional.
+      - identifier
+      - argument
+      - attribute.builtin
+      - attribute.id
+      - buildconfig.id
+      - buildconfig.keyword
+      - identifier
+      - keyword
+      - number
+      - objectliteral
+      - parameter
+      - placeholder
+      - string
+      - string_interpolation_anchor
+      - typeidentifier
+    message: "For empty arrays and dictionaries, use type annotation" # violation message. optional.
+    severity: error # violation severity. optional.

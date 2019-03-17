@@ -32,16 +32,19 @@ public protocol Photon {
 
 public extension Photon {
     
+    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> ()
+    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> ()
+    
     static func filter(_ isIncluded: (Self) -> Bool) -> Result<[Self], PhotonError> {
         return PhotonHelper<Self>.filter(isIncluded)
     }
     
-    static func fetch(type: PhotonType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Self], PhotonError> {
-        return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
+    static func fetch(type: PhotonType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0, _ completionBlock: FetchCompletionBlock) {
+        PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit, completionBlock)
     }
     
-    func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
-        try PhotonHelper.savePhoton(self, onQueue: queue)
+    func save(onQueue queue: DispatchQueue = DispatchQueue.global(), _ completionBlock: SaveCompletionBlock) {
+        PhotonHelper.savePhoton(self, onQueue: queue, completionBlock)
     }
 }
 
@@ -119,26 +122,37 @@ public struct Video: Photon {
 public protocol PhotonContainer {
     associatedtype Photon
     
+    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> ()
+    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> ()
+    
     var id: String { get }
     var name: String { get }
     var data: [Photon] { get }
+    
+    static func fetch(name: String, onQueue queue: DispatchQueue,  _ completionBlock: FetchCompletionBlock)
+    func save(onQueue queue: DispatchQueue, completionBlock: SaveCompletionBlock)
 }
 
 // MARK: Album
 
-public struct Album<PhotonType: Photon>: PhotonContainer {
+public struct Album<P: Photon>: PhotonContainer {
+
     public let id: String
     public let name: String
-    public let data: [PhotonType]
+    public let data: [P]
     
-    public init(id: String, name: String, data: [PhotonType]) {
+    public init(id: String, name: String, data: [P]) {
         self.id = id
         self.name = name
         self.data = data
     }
     
-    public func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
-        try data.save(onQueue: queue)
+    public static func fetch(name: String, onQueue queue: DispatchQueue = DispatchQueue.global(), _ completionBlock: FetchCompletionBlock) {
+//        PhotonHelper.fetchContainer(name: name, onQueue: queue)
+    }
+    
+    public func save(onQueue queue: DispatchQueue = DispatchQueue.global(), completionBlock: SaveCompletionBlock) {
+        PhotonHelper.saveContainer(self, onQueue: queue, completionBlock)
     }
 }
 
@@ -153,24 +167,28 @@ public struct Album<PhotonType: Photon>: PhotonContainer {
 
 public extension Result where Success == [Photo], Failure == PhotonError {
     
+    typealias FetchPhotoCompletionBlock = (Result<[Photo], PhotonError>) -> ()
+    
     func sorted(by areInIncreasingOrder: (Photo, Photo) -> Bool) -> Result<[Photo], PhotonError> {
         return PhotonHelper<Photo>.sorted(by: areInIncreasingOrder)
     }
     
-    func fetch(type: PhotoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Photo], PhotonError> {
-        return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
+    func fetch(type: PhotoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0, _ completionBlock: FetchPhotoCompletionBlock) {
+        PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit, completionBlock)
     }
     
 }
 
 public extension Result where Success == [Video], Failure == PhotonError {
     
+    typealias FetchVideoCompletionBlock = (Result<[Video], PhotonError>) -> ()
+    
     func sorted(by areInIncreasingOrder: (Video, Video) -> Bool) -> Result<[Video], PhotonError> {
         return PhotonHelper<Video>.sorted(by: areInIncreasingOrder)
     }
     
-    func fetch(type: VideoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0) -> Result<[Video], PhotonError> {
-        return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit)
+    func fetch(type: VideoType? = nil, onQueue queue: DispatchQueue = DispatchQueue.global(), size: Size? = nil, limit: UInt = 0, _ completionBlock: FetchVideoCompletionBlock) {
+        return PhotonHelper.fetch(type: type, onQueue: queue, size: size, limit: limit, completionBlock)
     }
     
 }
@@ -179,8 +197,8 @@ public extension Result where Success == [Video], Failure == PhotonError {
 
 public extension Array where Element: Photon {
     
-    func save(onQueue queue: DispatchQueue = DispatchQueue.global()) throws {
-        try forEach { try $0.save() }
+    func save(onQueue queue: DispatchQueue = DispatchQueue.global(), _ completionBlock: Photon.SaveCompletionBlock) {
+//        forEach { try $0.save() }
     }
     
 }

@@ -32,8 +32,8 @@ public protocol Photon {
 
 public extension Photon {
 
-    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> ()
-    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> ()
+    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> Void
+    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> Void
 
     static func filter(_ isIncluded: (Self) -> Bool) -> Result<[Self], PhotonError> {
         return PhotonHelper<Self>.filter(isIncluded)
@@ -122,14 +122,14 @@ public struct Video: Photon {
 public protocol PhotonContainer {
     associatedtype Photon
 
-    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> ()
-    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> ()
+    typealias FetchCompletionBlock = (Result<[Self], PhotonError>) -> Void
+    typealias SaveCompletionBlock = (Result<Void, PhotonError>) -> Void
 
     var id: String { get }
     var name: String { get }
     var data: [Photon] { get }
 
-    static func fetch(name: String, onQueue queue: DispatchQueue,  _ completionBlock: FetchCompletionBlock)
+    static func fetch(name: String, onQueue queue: DispatchQueue, _ completionBlock: FetchCompletionBlock)
     func save(onQueue queue: DispatchQueue, completionBlock: SaveCompletionBlock)
 }
 
@@ -167,7 +167,7 @@ public struct Album<P: Photon>: PhotonContainer {
 
 public extension Result where Success == [Photo], Failure == PhotonError {
 
-    typealias FetchPhotoCompletionBlock = (Result<[Photo], PhotonError>) -> ()
+    typealias FetchPhotoCompletionBlock = (Result<[Photo], PhotonError>) -> Void
 
     func sorted(by areInIncreasingOrder: (Photo, Photo) -> Bool) -> Result<[Photo], PhotonError> {
         return PhotonHelper<Photo>.sorted(by: areInIncreasingOrder)
@@ -181,7 +181,7 @@ public extension Result where Success == [Photo], Failure == PhotonError {
 
 public extension Result where Success == [Video], Failure == PhotonError {
 
-    typealias FetchVideoCompletionBlock = (Result<[Video], PhotonError>) -> ()
+    typealias FetchVideoCompletionBlock = (Result<[Video], PhotonError>) -> Void
 
     func sorted(by areInIncreasingOrder: (Video, Video) -> Bool) -> Result<[Video], PhotonError> {
         return PhotonHelper<Video>.sorted(by: areInIncreasingOrder)

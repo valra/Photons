@@ -10,7 +10,7 @@ import Foundation
 
 class PhotonHelper<A: Photon> {
 
-    typealias FetchCompletionBlock = (Result<[A], PhotonError>) -> ()
+    typealias FetchCompletionBlock = (Result<[A], PhotonError>) -> Void
 
     static func sorted(by areInIncreasingOrder: (A, A) -> Bool) -> Result<[A], PhotonError> {
         return .success([])

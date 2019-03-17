@@ -36,7 +36,7 @@ class PhotonHelper<A: Photon> {
 
 extension PhotonHelper {
 
-    static func fetchContainer(name: String, onQueue queue: DispatchQueue, _ completionBlock: FetchCompletionBlock) {
+    static func fetchContainer<Container: PhotonContainer>(name: String, onQueue queue: DispatchQueue, _ completionBlock: (Result<[Container], PhotonError>) -> Void) where Container.Photon == A {
         completionBlock(.success([]))
     }
 

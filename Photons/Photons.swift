@@ -148,7 +148,7 @@ public struct Album<P: Photon>: PhotonContainer {
     }
 
     public static func fetch(name: String, onQueue queue: DispatchQueue = DispatchQueue.global(), _ completionBlock: FetchCompletionBlock) {
-//        PhotonHelper.fetchContainer(name: name, onQueue: queue)
+        PhotonHelper.fetchContainer(name: name, onQueue: queue, completionBlock)
     }
 
     public func save(onQueue queue: DispatchQueue = DispatchQueue.global(), completionBlock: SaveCompletionBlock) {
